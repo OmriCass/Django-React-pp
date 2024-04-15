@@ -1,36 +1,36 @@
-import { useState } from "react"
-import api from "../api"
-import { useNavigate } from "react-router-dom"
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants"
-import Login from "../pages/Login"
+import { useState } from "react";
+import api from "../api";
+import { useNavigate } from "react-router-dom";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
+import "../styles/Form.css";
 
 function Form({ route, method }) {
-    const [userName, setUsername] = useState("")
-    const [password, setPassword] = useState("")
-    const [loading, setLoading] = useState(false)
-    const navigate = useNavigate()
+    const [userName, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
-    const name = method === "login" ? "Login" : "Register"
+    const name = method === "login" ? "Login" : "Register";
 
     const handleSubmit = async (e) => {
-        setLoading(true)
-        e.preventDefault()
+        setLoading(true);
+        e.preventDefault();
 
-        try{
+        try {
             const res = await api.post(route, { username, password })
-            if(method === "login"){
-                localStorage.setItem(ACCESS_TOKEN, res.data.ACCESS_TOKEN)
-                localStorage.setItem(REFRESH_TOKEN, res.data.REFRESH_TOKEN)
+            if (method === "login") {
+                localStorage.setItem(ACCESS_TOKEN, res.data.ACCESS_TOKEN);
+                localStorage.setItem(REFRESH_TOKEN, res.data.REFRESH_TOKEN);
                 navigate("/")
             } else {
                 navigate("/login")
             }
-        } catch (error){
+        } catch (error) {
             alert(error)
         } finally {
             setLoading(false)
         }
-    }
+    };
 
     return <form onSubmit={handleSubmit} className="form-container">
         <h1>{name}</h1>
@@ -53,3 +53,5 @@ function Form({ route, method }) {
         </button>
     </form>
 }
+
+export default Form
